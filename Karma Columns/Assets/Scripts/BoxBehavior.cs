@@ -15,10 +15,19 @@ public class BoxBehavior : MonoBehaviour
     private Vector3 pushDir;    //Direction wind is pushing the box
     private bool inMotion;      //Whether or not it should be pushed
 
+    private bool rainDmg;
+    private bool hailDmg;
+
+    private float timer;
+    private float starttime;
+    private float scale;
     // Start is called before the first frame update
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
+        timer = 1.0f;
+        durability = 100;
+        scale = 1.0f;
     }
 
     // Update is called once per frame
@@ -26,7 +35,37 @@ public class BoxBehavior : MonoBehaviour
     {
         if(inMotion)
         {
-            rb.AddForce(pushDir);
+            rb.AddForce(pushDir * 3.5f);
+        }
+
+        if(rainDmg)
+        {
+            if(Time.time >= starttime+timer)
+            {
+                durability -= 2;
+                scale = durability / 100;
+                if(scale <= 0)
+                {
+                    Destroy(gameObject);
+                }
+                gameObject.transform.localScale = new Vector3(scale, gameObject.transform.localScale.y, scale);
+                timer += timer;
+            }
+        }
+
+        if (hailDmg)
+        {
+            if (Time.time >= starttime + timer)
+            {
+                durability -= durability*0.1f;
+                scale = durability / 100;
+                if (scale <= 0)
+                {
+                    Destroy(gameObject);
+                }
+                gameObject.transform.localScale = new Vector3(scale, gameObject.transform.localScale.y, scale);
+                timer += timer;
+            }
         }
     }
 
@@ -63,24 +102,53 @@ public class BoxBehavior : MonoBehaviour
         }
     }
 
-    void setOwner(GameObject g)
+    public void setOwner(GameObject g)
     {
         owner = g;
     }
 
-    void setHolder(GameObject g)
+    public void setHolder(GameObject g)
     {
         holder = g;
     }
 
-    void setMotion(Vector3 d)
+    public void setMotion(Vector3 d)
     {
         pushDir = d;
         inMotion = true;
     }
 
-    void toggleGrav()
+    public void stopMotion()
     {
-        rb.useGravity = !rb.useGravity;
+        pushDir = Vector3.zero;
+        inMotion = false;
+    }
+
+    public void rainDamage()
+    {
+        starttime = Time.time;
+        rainDmg = true;
+        timer = 0.5f;
+    }
+
+    public void stopRainDamage()
+    {
+        rainDmg = false;
+        timer = 0;
+        starttime = 0;
+    }
+
+    public void HailDamage()
+    {
+        starttime = Time.time;
+        hailDmg = true;
+        timer = 1.0f;
+    }
+
+    public void stopHailDamage()
+    {
+        hailDmg = false;
+        timer = 0;
+        starttime = 0;
     }
 }
