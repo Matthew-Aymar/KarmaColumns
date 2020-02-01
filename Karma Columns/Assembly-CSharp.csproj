@@ -46,6 +46,7 @@
   </PropertyGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\BoxBehavior.cs" />
+     <Compile Include="Assets\Scripts\MakerScript.cs" />
      <Compile Include="Assets\Scripts\ResourceBehavior.cs" />
      <Compile Include="Assets\Scripts\Spawncontroller.cs" />
  <Reference Include="UnityEngine">
