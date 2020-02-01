@@ -21,6 +21,9 @@ public class BoxBehavior : MonoBehaviour
     private float timer;
     private float starttime;
     private float scale;
+
+    public GameObject lightning;
+    private bool lightningCheck;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,19 +31,20 @@ public class BoxBehavior : MonoBehaviour
         timer = 1.0f;
         durability = 100;
         scale = 1.0f;
+        lightning = (GameObject)Resources.Load("Prefabs/Lightning");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(inMotion)
+        if (inMotion)
         {
-            rb.AddForce(pushDir * 3.5f);
+            rb.AddForce(pushDir * 3f);
         }
 
-        if(rainDmg)
+        if (rainDmg)
         {
-            if(Time.time >= starttime+timer)
+            if(Time.time >= starttime + timer)
             {
                 durability -= 2;
                 scale = durability / 100;
@@ -57,13 +61,27 @@ public class BoxBehavior : MonoBehaviour
         {
             if (Time.time >= starttime + timer)
             {
-                durability -= durability*0.1f;
+                durability -= durability*0.2f;
                 scale = durability / 100;
                 if (scale <= 0)
                 {
                     Destroy(gameObject);
                 }
                 gameObject.transform.localScale = new Vector3(scale, gameObject.transform.localScale.y, scale);
+                timer += timer;
+            }
+        }
+
+        if (lightningCheck)
+        {
+            if (Time.time >= starttime + timer)
+            {
+                float r = Random.value * 100;
+                if (r > 90)
+                {
+                    lightning = Instantiate(lightning, gameObject.transform);
+                    lightning.GetComponent<LightningBehavior>().box = gameObject;
+                }
                 timer += timer;
             }
         }
@@ -150,5 +168,19 @@ public class BoxBehavior : MonoBehaviour
         hailDmg = false;
         timer = 0;
         starttime = 0;
+    }
+
+    public void lightningStrikes()
+    {
+        lightningCheck = true;
+        starttime = Time.time;
+        timer = 1.0f;
+    }
+
+    public void stopStrikes()
+    {
+        lightningCheck = false;
+        starttime = 0;
+        timer = 0;
     }
 }
