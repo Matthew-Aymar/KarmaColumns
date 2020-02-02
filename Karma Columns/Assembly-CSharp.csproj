@@ -69,7 +69,7 @@
     <Compile Include="Assets\Scripts\Spawncontroller.cs" />
     <Compile Include="Assets\Scripts\Timer.cs" />
     <Compile Include="Assets\Scripts\UI Controller.cs" />
-    <Compile Include="Assets\UI.cs" />
+    <Compile Include="Assets\Scripts\UI.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/Derik/Unity/KarmaColumns/Karma Columns/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
