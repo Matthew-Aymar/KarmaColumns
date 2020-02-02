@@ -39,7 +39,7 @@ public class BoxBehavior : MonoBehaviour
     {
         if (inMotion)
         {
-            rb.AddForce(pushDir * 3f);
+            rb.AddForce(pushDir * 3.5f);
         }
 
         if (rainDmg)
